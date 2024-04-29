@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: attend-frontend-svc
+  namespace: frontend-ns
+  labels:
+    app: attend-frontend
+spec: 
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: attend-frontend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: attend-backend-svc
+  namespace: backend-ns
+  labels:
+    app: attend-backend
+spec: 
+  ports:
+  - port: 5000
+    targetPort: 5000
+  selector:
+    app: attend-backend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: attend-db-svc
+  namespace: database-ns
+  labels:
+    app: attend-db
+spec: 
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: attend-db
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-frontend-svc
+  namespace: frontend-ns
+  labels:
+    app: qa-frontend
+spec: 
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: qa-frontend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-backend-svc
+  namespace: backend-ns
+  labels:
+    app: qa-backend
+spec: 
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: qa-backend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-db-svc
+  namespace: database-ns
+  labels:
+    app: qa-db
+spec: 
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    app: qa-db
+  type: ClusterIP

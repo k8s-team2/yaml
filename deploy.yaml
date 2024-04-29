@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: backend-ns
+  labels:
+    app: attend-backend
+  name: attend-backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: attend-backend
+  template:
+    metadata:
+      labels:
+        app: attend-backend
+    spec:
+      containers:
+      - image: kijung2/k8s-flask:1.0
+        name: attend-backend
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MYSQL_HOST
+          value: attend-db-svc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: frontend-ns
+  labels:
+    app: attend-frontend-deploy
+  name: attend-frontend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: attend-frontend
+  template:
+    metadata:
+      labels:
+        app: attend-frontend
+    spec:
+      containers:
+      - image: kangyejini/frontend-attend:5.0
+        name: attend-frontend
+        ports:
+        - containerPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: database-ns
+  labels:
+    app: attend-db-deploy
+  name: attend-db-deploy
+spec:
+  selector:
+    matchLabels:
+      app: attend-db
+  template:
+    metadata:
+      labels:
+        app: attend-db
+    spec:
+      containers:
+      - image: kijung2/docker-mysql:latest
+        name: attend-db
+        ports:
+        - containerPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: backend-ns
+  labels:
+    app: qa-backend-deploy
+  name: qa-backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qa-backend
+  template:
+    metadata:
+      labels:
+        app: qa-backend
+    spec:
+      containers:
+      - image: kimyoungwoo613/back:2.0
+        name: qa-backend
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MONGO_IP
+          value: qa-db-svc
+        - name: MONGO_PORT
+          value: "27017"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: frontend-ns
+  labels:
+    app: qa-frontend-deploy
+  name: qa-frontend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qa-frontend
+  template:
+    metadata:
+      labels:
+        app: qa-frontend
+    spec:
+      containers:
+      - image: crystal119/frontend-qna:2.5
+        name: qa-frontend
+        ports:
+        - containerPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: database-ns
+  labels:
+    app: qa-db-deploy
+  name: qa-db-deploy
+spec:
+  selector:
+    matchLabels:
+      app: qa-db
+  template:
+    metadata:
+      labels:
+        app: qa-db
+    spec:
+      containers:
+      - image: minho7336/db:1.0
+        name: qa-db
+        ports:
+        - containerPort: 27017
