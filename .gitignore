@@ -1,0 +1,6 @@
+*.crt
+*.key
+*.sh
+ingress.yaml
+resource.yaml
+config.yaml

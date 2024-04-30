@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: frontend-ns
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: www.awsteam2.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: attend-frontend-svc
+            port:
+              number: 3000
+  - host: www.awsteam2.com
+    http:
+      paths:
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: attend-backend-svc
+            port:
+              number: 5000
+  - host: www.awsteam2.com
+    http:
+      paths:
+      - path: /qa
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: qa-frontend-svc
+            port:
+              number: 3000
+  - host: www.awsteam2.com
+    http:
+      paths:
+      - path: /qna
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: qa-backend-svc
+            port:
+              number: 8000
