@@ -1,1 +1,11 @@
-minholee
+# 사용법
+
+# secret 만들기
+kubectl create secret tls awsteam2secret --key awsteam2.key --cert awsteam2.crt --namespace frontend-ns
+kubectl create secret tls awsteam2secret --key awsteam2.key --cert awsteam2.crt --namespace backend-ns
+
+# apply 하기
+kubectl apply -f 로 모두 올리기 (단, 아직 hpa는 적용하기 전임)
+
+# 도메인 등록
+C:\Windows\System32\drivers\etc\hosts에 ingress가 받은 ip 수정
