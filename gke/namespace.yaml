@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frontend-ns
+  labels:
+    tier: frontend
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: backend-ns
+  labels:
+    tier: backend
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: database-ns
+  labels:
+    tier: database
