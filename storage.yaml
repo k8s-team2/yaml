@@ -31,7 +31,7 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   local:
-    path: /k8s-proj-nfs/mysql
+    path: /k8s-proj-nfs/mongo
   nodeAffinity:
     required:
       nodeSelectorTerms:
