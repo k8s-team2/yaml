@@ -119,7 +119,7 @@ spec:
         app: qa-frontend
     spec:
       containers:
-      - image: crystal119/frontend-qna:2.5
+      - image: crystal119/frontend-qna:2.6
         name: qa-frontend
         ports:
         - containerPort: 3000
