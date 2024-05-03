@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: backend-ns
+  name: attend-backend-cm
+data:
+  MYSQL_HOST: attend-db-svc.database-ns
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: backend-ns
+  name: qa-backend-cm
+data:
+  MONGO_IP: qa-db-svc.database-ns
+  MONGO_PORT: "27017"
