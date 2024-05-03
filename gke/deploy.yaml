@@ -22,7 +22,10 @@ spec:
         - containerPort: 5000
         env:
         - name: MYSQL_HOST
-          value: attend-db-svc.database-ns
+          valueFrom:
+            configMapKeyRef:
+              name: attend-backend-cm
+              key: MYSQL_HOST
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -97,9 +100,15 @@ spec:
         - containerPort: 8000
         env:
         - name: MONGO_IP
-          value: qa-db-svc.database-ns
+          valueFrom:
+            configMapKeyRef:
+              name: qa-backend-cm
+              key: MONGO_IP
         - name: MONGO_PORT
-          value: "27017"
+          valueFrom:
+            configMapKeyRef:
+              name: qa-backend-cm
+              key: MONGO_PORT
 ---
 apiVersion: apps/v1
 kind: Deployment
