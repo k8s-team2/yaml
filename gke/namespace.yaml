@@ -18,3 +18,10 @@ metadata:
   name: database-ns
   labels:
     tier: database
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring-ns
+  labels:
+    tier: monitoring
