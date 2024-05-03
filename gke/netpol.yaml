@@ -1,0 +1,160 @@
+# frontend-ns label=tier=frontend
+# backend-ns label=tier=backend
+# ingress-nginx label=tier=ingress-nginx
+# database-ns label=tier=database
+# monitoring-ns
+
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: database-netpol
+  namespace: database-ns
+spec:
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: backend
+    - from:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: monitering-ns
+  egress:
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: kube-system
+        podSelector:
+          matchLabels:
+            k8s-app: kube-dns
+      ports:
+      - protocol: UDP
+        port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend-netpol
+  namespace: backend-ns
+spec:
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: ingress-nginx
+    - from:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: monitering-ns
+  egress:
+    - to:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: database
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: kube-system
+        podSelector:
+          matchLabels:
+            k8s-app: kube-dns
+      ports:
+      - protocol: UDP
+        port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: frontend-netpol
+  namespace: frontend-ns
+spec:
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: ingress-nginx
+    - from:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: monitering-ns
+  egress:
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: kube-system
+        podSelector:
+          matchLabels:
+            k8s-app: kube-dns
+      ports:
+      - protocol: UDP
+        port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ingress-netpol
+  namespace: ingress-nginx
+spec:
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - from:
+      - ipBlock:
+          cidr: 0.0.0.0/0
+  egress:
+    - to:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: frontend
+    - to:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: backend
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: kube-system
+        podSelector:
+          matchLabels:
+            k8s-app: kube-dns
+      ports:
+      - protocol: UDP
+        port: 53
+
