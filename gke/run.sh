@@ -18,4 +18,5 @@ if kubectl get namespace monitoring-ns >/dev/null 2>&1; then
     kubectl delete namespace database-ns
 fi
 
-k apply -f ./etc/namespace.yaml
+kubectl apply -f ./etc/namespace.yaml
+kubectl apply -f .
