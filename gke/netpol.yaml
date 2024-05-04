@@ -8,7 +8,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: database-netpol
+  name: default-deny-all-database
   namespace: database-ns
 spec:
   podSelector:
@@ -16,6 +16,15 @@ spec:
   policyTypes:
   - Ingress
   - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-from-backend
+  namespace: database-ns
+spec:
+  podSelector:
+    matchLabels: {}
   ingress:
     - from:
       - podSelector:
@@ -28,23 +37,12 @@ spec:
           matchLabels: {}
         namespaceSelector:
           matchLabels:
-            tier: monitering-ns
-  egress:
-    - to:
-      - namespaceSelector:
-          matchLabels:
-            kubernetes.io/metadata.name: kube-system
-        podSelector:
-          matchLabels:
-            k8s-app: kube-dns
-      ports:
-      - protocol: UDP
-        port: 53
+            tier: monitoring-ns
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: backend-netpol
+  name: default-deny-all-backend
   namespace: backend-ns
 spec:
   podSelector:
@@ -52,6 +50,15 @@ spec:
   policyTypes:
   - Ingress
   - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-from-ingress-monitor
+  namespace: backend-ns
+spec:
+  podSelector:
+    matchLabels: {}
   ingress:
     - from:
       - podSelector:
@@ -64,7 +71,16 @@ spec:
           matchLabels: {}
         namespaceSelector:
           matchLabels:
-            tier: monitering-ns
+            tier: monitoring-ns
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress-to-database
+  namespace: backend-ns
+spec:
+  podSelector:
+    matchLabels: {}
   egress:
     - to:
       - podSelector:
@@ -86,7 +102,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: frontend-netpol
+  name: default-deny-all-frontend
   namespace: frontend-ns
 spec:
   podSelector:
@@ -94,6 +110,15 @@ spec:
   policyTypes:
   - Ingress
   - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-from-ingress-monitor
+  namespace: frontend-ns
+spec:
+  podSelector:
+    matchLabels: {}
   ingress:
     - from:
       - podSelector:
@@ -106,8 +131,23 @@ spec:
           matchLabels: {}
         namespaceSelector:
           matchLabels:
-            tier: monitering-ns
+            tier: monitoring-ns
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress-to-ingress
+  namespace: frontend-ns
+spec:
+  podSelector:
+    matchLabels: {}
   egress:
+    - to:
+      - podSelector:
+          matchLabels: {}
+        namespaceSelector:
+          matchLabels:
+            tier: ingress-nginx
     - to:
       - namespaceSelector:
           matchLabels:
@@ -122,7 +162,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: ingress-netpol
+  name: default-deny-all-ingress
   namespace: ingress-nginx
 spec:
   podSelector:
@@ -130,10 +170,28 @@ spec:
   policyTypes:
   - Ingress
   - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-all
+  namespace: ingress-nginx
+spec:
+  podSelector:
+    matchLabels: {}
   ingress:
     - from:
       - ipBlock:
           cidr: 0.0.0.0/0
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress-front-back
+  namespace: ingress-nginx
+spec:
+  podSelector:
+    matchLabels: {}
   egress:
     - to:
       - podSelector:
