@@ -12,18 +12,24 @@ spec:
   maxReplicas: 5
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 100 # 결정 100초
+      stabilizationWindowSeconds: 5 # 결정 100초
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 10 # 메트릭 평가 수집 10초
+        periodSeconds: 5 # 메트릭 평가 수집 10초
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -39,18 +45,24 @@ spec:
   maxReplicas: 5
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 100 # 결정 100초
+      stabilizationWindowSeconds: 5 # 결정 100초
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 10 # 메트릭 평가 수집 10초
+        periodSeconds: 5 # 메트릭 평가 수집 10초
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -66,18 +78,24 @@ spec:
   maxReplicas: 5
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 100 # 결정 100초
+      stabilizationWindowSeconds: 5 # 결정 100초
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 10 # 메트릭 평가 수집 10초
+        periodSeconds: 5 # 메트릭 평가 수집 10초
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -93,15 +111,21 @@ spec:
   maxReplicas: 5
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 100 # 결정 100초
+      stabilizationWindowSeconds: 5 # 결정 100초
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 10 # 메트릭 평가 수집 10초
+        periodSeconds: 5 # 메트릭 평가 수집 10초
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

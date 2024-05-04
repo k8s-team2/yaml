@@ -20,6 +20,13 @@ spec:
         name: attend-backend
         ports:
         - containerPort: 5000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
         env:
         - name: MYSQL_HOST
           valueFrom:
@@ -49,6 +56,13 @@ spec:
         name: attend-frontend
         ports:
         - containerPort: 3000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -98,6 +112,13 @@ spec:
         name: qa-backend
         ports:
         - containerPort: 8000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
         env:
         - name: MONGO_IP
           valueFrom:
@@ -132,6 +153,13 @@ spec:
         name: qa-frontend
         ports:
         - containerPort: 3000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
 ---
 apiVersion: apps/v1
 kind: Deployment

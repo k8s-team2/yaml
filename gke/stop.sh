@@ -15,5 +15,5 @@ fi
 
 if kubectl get namespace monitoring-ns >/dev/null 2>&1; then
     kubectl patch pvc monitoring-pvc -p '{"metadata":{"finalizers":null}}' -n monitoring-ns
-    kubectl delete namespace database-ns
+    kubectl delete namespace monitoring-ns
 fi
